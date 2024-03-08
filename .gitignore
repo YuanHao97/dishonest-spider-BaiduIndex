@@ -6,5 +6,5 @@
 qdata.egg-info/
 build/
 dist/
-
+examples/*.xlsx
 test.py

@@ -5,7 +5,8 @@ import json
 from . import common
 from qdata.errors import QdataError, ErrorCode
 
-ALL_KIND = ['all', 'pc', 'wise']
+# ALL_KIND = ['all', 'pc', 'wise']
+ALL_KIND = ['all']
 
 
 def get_search_index(
@@ -19,6 +20,7 @@ def get_search_index(
     if len(keywords_list) > 5:
         raise QdataError(ErrorCode.KEYWORD_LIMITED)
     for start_date, end_date in common.get_time_range_list(start_date, end_date):
+        print("{} time range: {} - {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), start_date, end_date))
         encrypt_json = common.get_encrypt_json(
             start_date=start_date,
             end_date=end_date,
@@ -34,11 +36,10 @@ def get_search_index(
         for encrypt_data in encrypt_datas:
             for kind in ALL_KIND:
                 encrypt_data[kind]['data'] = common.decrypt_func(key, encrypt_data[kind]['data'])
-            for formated_data in format_data(encrypt_data):
+            for formated_data in format_data(encrypt_data,area):
                 yield formated_data
 
-
-def format_data(data: Dict):
+def format_data(data: Dict,area):
     """
         格式化堆在一起的数据
     """
@@ -61,6 +62,7 @@ def format_data(data: Dict):
                 'keyword': [keyword_info['name'] for keyword_info in json.loads(keyword.replace('\'', '"'))],
                 'type': kind,
                 'date': cur_date.strftime('%Y-%m-%d'),
-                'index': index_data if index_data else '0'
+                'index': index_data if index_data else '0',
+                'area': area
             }
             yield formated_data
