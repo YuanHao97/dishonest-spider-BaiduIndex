@@ -20,7 +20,7 @@ def get_search_index(
     if len(keywords_list) > 5:
         raise QdataError(ErrorCode.KEYWORD_LIMITED)
     for start_date, end_date in common.get_time_range_list(start_date, end_date):
-        print("{} time range: {} - {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), start_date, end_date))
+        print("{} time range: {} - {}".format(datetime.datetime.now().strftime('%Y%m%d %H:%M:%S'), start_date, end_date))
         encrypt_json = common.get_encrypt_json(
             start_date=start_date,
             end_date=end_date,
