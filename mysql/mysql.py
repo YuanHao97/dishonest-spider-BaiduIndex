@@ -11,13 +11,14 @@ MYSQL_USER = "root"
 MYSQL_PASSWORD = "rootroot"
 
 
-# create table dishonesty(dt int, area_id int, area_name varchar(32), keywords varchar(128), search_index bigint, feed_index bigint, UNIQUE KEY `k` (`dt`,`area_id`,`keywords`));
+# create table dishonest(dt int, area_id int, area_name varchar(32), keywords varchar(128), level int, search_index bigint, feed_index bigint, UNIQUE KEY `k` (`dt`,`area_id`,`keywords`));
 
 class DishonestEntity:
     dt: str
     area_id: int
     area_name: str
     keywords: str
+    level: int
     search_index: int
     feed_index: int
 
@@ -31,6 +32,8 @@ class DishonestEntity:
             d["area_name"] = self.area_name
         if hasattr(self, "keywords"):
             d["keywords"] = self.keywords
+        if hasattr(self, "level"):
+            d["level"] = self.level
         if hasattr(self, "search_index"):
             d["search_index"] = self.search_index
         if hasattr(self, "feed_index"):
@@ -48,9 +51,11 @@ def from_row(row: list, d: DishonestEntity) -> DishonestEntity:
     if row[3] is not None:
         d.keywords = row[3]
     if row[4] is not None:
-        d.search_index = row[4]
+        d.keywords = row[4]
     if row[5] is not None:
-        d.feed_index = row[5]
+        d.search_index = row[5]
+    if row[6] is not None:
+        d.feed_index = row[6]
     return d
 
 
@@ -83,14 +88,14 @@ class MySQLClient:
             return
         self.upsert(entity)
 
-    def upsert(self, dishonesty: DishonestEntity):
+    def upsert(self, dishonest: DishonestEntity):
         self.cursor.execute(
-            "select * from dishonesty where area_id={} and dt={} and keywords='{}'"
-            .format(dishonesty.area_id, dishonesty.dt, dishonesty.keywords))
+            "select * from dishonest where area_id={} and dt={} and keywords='{}'"
+            .format(dishonest.area_id, dishonest.dt, dishonest.keywords))
         row = self.cursor.fetchone()
         if row is None:
-            keys, values = zip(*dict(dishonesty.to_dict()).items())
-            insert_sql = 'INSERT INTO dishonesty ({}) VALUES ({})'.format(
+            keys, values = zip(*dict(dishonest.to_dict()).items())
+            insert_sql = 'INSERT INTO dishonest ({}) VALUES ({})'.format(
                 ','.join(keys),
                 ','.join(['%s'] * len(values))
             )
@@ -98,10 +103,10 @@ class MySQLClient:
             self.cursor.execute(insert_sql, values)
             # 提交事务
             self.connection.commit()
-            # print('插入数据,{}'.format(dishonesty.to_dict()))
+            # print('插入数据,{}'.format(dishonest.to_dict()))
         else:
-            newRow = from_row(row, dishonesty)
-            update_sql = 'update dishonesty set {} where dt={} and area_id={} and keywords="{}"'.format(
+            newRow = from_row(row, dishonest)
+            update_sql = 'update dishonest set {} where dt={} and area_id={} and keywords="{}"'.format(
                 ','.join(["{}='{}'".format(k, v) for k, v in newRow.to_dict().items()]),
                 newRow.dt,
                 newRow.area_id,

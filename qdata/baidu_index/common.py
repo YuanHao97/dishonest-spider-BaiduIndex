@@ -117,8 +117,8 @@ def decrypt_func(key: str, data: str) -> List[str]:
 
 def get_encrypt_json(
     *,
-    start_date: str,
-    end_date: str,
+    start_date,
+    end_date,
     keywords: List[List[str]],
     type: str,
     area: int,

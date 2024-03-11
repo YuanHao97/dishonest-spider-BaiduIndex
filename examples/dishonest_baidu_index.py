@@ -6,6 +6,7 @@
 3. 请求容错
 4. 容错后并保留当前已经请求过的数据，并print已请求过的keywords
 """
+import random
 import json
 from queue import Queue
 from typing import Dict, List
@@ -18,13 +19,14 @@ from qdata.baidu_index import get_search_index
 from qdata.baidu_index import get_feed_index
 from qdata.baidu_index.common import check_keywords_exists, split_keywords
 import mysql.mysql
-# cookies = "BAIDUID=C94E71F42A6F790D29D970728B032CE8:FG=1; BAIDUID_BFESS=C94E71F42A6F790D29D970728B032CE8:FG=1; BDUSS=FPN3V1dnY3bjFTWi13cmlCclFYUnY1MzF2UXp-LWJsWEdKZlc5YjdzTnVPeEptRVFBQUFBJCQAAAAAAAAAAAEAAABQWgVBYmVsaWV2ZTg5NAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG6u6mVuruplVT; BDUSS_BFESS=FPN3V1dnY3bjFTWi13cmlCclFYUnY1MzF2UXp-LWJsWEdKZlc5YjdzTnVPeEptRVFBQUFBJCQAAAAAAAAAAAEAAABQWgVBYmVsaWV2ZTg5NAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG6u6mVuruplVT; BIDUPSID=C94E71F42A6F790D29D970728B032CE8; H_PS_PSSID=39662_40207_40212_40217_40294_40291_40287_40285_40079_40364_40352_40373_40367_40317; PSTM=1709878894; bdindexid=baro17vijkbfemvour9sjf5li2; PTOKEN=c74f1608e72a402842aadb7f9cfbc521; PTOKEN_BFESS=c74f1608e72a402842aadb7f9cfbc521; STOKEN=6ede54cc33e9ae5ae4ed32c1019f87a7b731beec6238a69fd3dd37e52904b2a7; STOKEN_BFESS=6ede54cc33e9ae5ae4ed32c1019f87a7b731beec6238a69fd3dd37e52904b2a7; UBI=fi_PncwhpxZ%7ETaJcxFmvzU7ni8BBW0NmP2Y; UBI_BFESS=fi_PncwhpxZ%7ETaJcxFmvzU7ni8BBW0NmP2Y; __yjs_st=2_YWNjY2IyNzk5MTY5MWExNTU4NmQ1MTczNTM3YmQwZjUzOGJlODkxMjc5ZmQ0YmU2NDg4ZmI1ZGMxMjY2OTNlYzRjMTQ5ZGFhOTBkMzBlNTgzZGJiNTczZTg4NDk4YzM5NTFkYjNhZmRhNGViYmZjNzc0YjNiMDM4MTgxYjM4NTAyMDE1ZTgxOTE1N2E0NDliODI5ZWQ0NGE4YWY2YmMzYTM3MzI2N2Y0YmRiNjc0YTk5NDYzMWJkMzI5M2RiMGI2XzdfYTk3NjRjYzc="
-cookies = "BAIDUID=35242943A7EC7E3C01B479A25475FD81:FG=1; BAIDUID_BFESS=35242943A7EC7E3C01B479A25475FD81:FG=1; BDUSS=NqcllJbHB6YkVCQzItaGdifmRQOFR-c29KWG1Yczd6Z084V2NOcG1HMlpCUlJtRVFBQUFBJCQAAAAAAQAAAAEAAADBIa4sAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJl47GWZeOxlcW; BDUSS_BFESS=NqcllJbHB6YkVCQzItaGdifmRQOFR-c29KWG1Yczd6Z084V2NOcG1HMlpCUlJtRVFBQUFBJCQAAAAAAQAAAAEAAADBIa4sAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJl47GWZeOxlcW; BIDUPSID=35242943A7EC7E3C01B479A25475FD81; PSTM=1709996185; bdindexid=liltg0ji55lojjv6lov32q25t3; PTOKEN=3016de186f30d1b99d86053af6605275; PTOKEN_BFESS=3016de186f30d1b99d86053af6605275; STOKEN=2cd445813d9d6b08620a3ebaeca9e71eb0fd905000b03536361a3eb84bc5e6bb; STOKEN_BFESS=2cd445813d9d6b08620a3ebaeca9e71eb0fd905000b03536361a3eb84bc5e6bb; UBI=fi_PncwhpxZ%7ETaJc-ZQr4XdgbyU0s9x7vkY; UBI_BFESS=fi_PncwhpxZ%7ETaJc-ZQr4XdgbyU0s9x7vkY; __yjs_st=2_NjY1MDk3YmQ1Y2U4NDU1YjI5YzQ1MWRkNTYzYTU3MjhmNGRjMjA2ZDdiNGJiYWU4NGQwMmRlMGU5MTZlMzk4ODEwYzk2N2MzYmQxOTA5NWU1MjNmOWE1YzM5YzljYTJiMDAzNWMxNTcyOTA4YzczNmYyMzFjN2VlNGZiNjU4MGRiNWI4Y2EzNzI4YjgwMTFiN2M4NjdhMGMzNDE3YTY5ZTA2MDJjYjFlZWFmZTczNDA3ZDU5OGVjYTQzZjVmZTk3NzcwNWM0NzkyZTc5OGZlMDM3OWI5ODc4NjY5NmFmNGY5ZTM3MmFkY2M5NDA0ODI2NzU0MDFjODkzNGM1YjYwOF83X2UxYmQ4MDcx"
-# cookies = "BAIDUID=96E366727FD9EBF2F4A89C040BE258D9:FG=1; BAIDUID_BFESS=96E366727FD9EBF2F4A89C040BE258D9:FG=1; BDUSS=U5FeWNmWkJTSXNVTUVreDA0MTVrMmE4cUtsVjM2cTQzQjZPUkZqWW5yZzV0Uk5tRVFBQUFBJCQAAAAAAAAAAAEAAAD56I9hc3VubnlCYWJ5ZmFjZTIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADko7GU5KOxlW; BDUSS_BFESS=U5FeWNmWkJTSXNVTUVreDA0MTVrMmE4cUtsVjM2cTQzQjZPUkZqWW5yZzV0Uk5tRVFBQUFBJCQAAAAAAAAAAAEAAAD56I9hc3VubnlCYWJ5ZmFjZTIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADko7GU5KOxlW; BIDUPSID=96E366727FD9EBF2F4A89C040BE258D9; PSTM=1709975609; bdindexid=7oqgul4pi6blkjue1iuat64rd4; PTOKEN=b1ba14a8abe727e954621ca914294558; PTOKEN_BFESS=b1ba14a8abe727e954621ca914294558; STOKEN=726b2abefbb42bd5a37b5e7cb8c15696404340b89c86f6d63e18381aaed59f12; STOKEN_BFESS=726b2abefbb42bd5a37b5e7cb8c15696404340b89c86f6d63e18381aaed59f12; UBI=fi_PncwhpxZ%7ETaJc0ZWzMxP4Kdy0UxDbrUn; UBI_BFESS=fi_PncwhpxZ%7ETaJc0ZWzMxP4Kdy0UxDbrUn; __yjs_st=2_NjY1MDk3YmQ1Y2U4NDU1YjI5YzQ1MWRkNTYzYTU3MjhmNGRjMjA2ZDdiNGJiYWU4NGQwMmRlMGU5MTZlMzk4ODEwYzk2N2MzYmQxOTA5NWU1MjNmOWE1YzM5YzljYTJiMDAzNWMxNTcyOTA4YzczNmYyMzFjN2VlNGZiNjU4MGRiNWI4Y2EzNzI4YjgwMTFiN2M4NjdhMGMzNDE3YTY5ZTQ4NGI5NDMwMDEwMmVlZGUyZjgwYmRkZTlhNGZjYmIzOTdjYTIzYzAwMTE5NjAyMzM2YmEzYmQ3MjEzOGYyMGU1NWNmYmJmMjIwZTU3YTZmYTdjODRmYjM2MjIzZGU1Nl83X2E5ZGQ3MzAx"
+cookies = []
+cookies.append("BAIDUID=C94E71F42A6F790D29D970728B032CE8:FG=1; BAIDUID_BFESS=C94E71F42A6F790D29D970728B032CE8:FG=1; BDUSS=FPN3V1dnY3bjFTWi13cmlCclFYUnY1MzF2UXp-LWJsWEdKZlc5YjdzTnVPeEptRVFBQUFBJCQAAAAAAAAAAAEAAABQWgVBYmVsaWV2ZTg5NAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG6u6mVuruplVT; BDUSS_BFESS=FPN3V1dnY3bjFTWi13cmlCclFYUnY1MzF2UXp-LWJsWEdKZlc5YjdzTnVPeEptRVFBQUFBJCQAAAAAAAAAAAEAAABQWgVBYmVsaWV2ZTg5NAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG6u6mVuruplVT; BIDUPSID=C94E71F42A6F790D29D970728B032CE8; H_PS_PSSID=39662_40207_40212_40217_40294_40291_40287_40285_40079_40364_40352_40373_40367_40317; PSTM=1709878894; bdindexid=baro17vijkbfemvour9sjf5li2; PTOKEN=c74f1608e72a402842aadb7f9cfbc521; PTOKEN_BFESS=c74f1608e72a402842aadb7f9cfbc521; STOKEN=6ede54cc33e9ae5ae4ed32c1019f87a7b731beec6238a69fd3dd37e52904b2a7; STOKEN_BFESS=6ede54cc33e9ae5ae4ed32c1019f87a7b731beec6238a69fd3dd37e52904b2a7; UBI=fi_PncwhpxZ%7ETaJcxFmvzU7ni8BBW0NmP2Y; UBI_BFESS=fi_PncwhpxZ%7ETaJcxFmvzU7ni8BBW0NmP2Y; __yjs_st=2_YWNjY2IyNzk5MTY5MWExNTU4NmQ1MTczNTM3YmQwZjUzOGJlODkxMjc5ZmQ0YmU2NDg4ZmI1ZGMxMjY2OTNlYzRjMTQ5ZGFhOTBkMzBlNTgzZGJiNTczZTg4NDk4YzM5NTFkYjNhZmRhNGViYmZjNzc0YjNiMDM4MTgxYjM4NTAyMDE1ZTgxOTE1N2E0NDliODI5ZWQ0NGE4YWY2YmMzYTM3MzI2N2Y0YmRiNjc0YTk5NDYzMWJkMzI5M2RiMGI2XzdfYTk3NjRjYzc=")
+cookies.append("BAIDUID=35242943A7EC7E3C01B479A25475FD81:FG=1; BAIDUID_BFESS=35242943A7EC7E3C01B479A25475FD81:FG=1; BDUSS=NqcllJbHB6YkVCQzItaGdifmRQOFR-c29KWG1Yczd6Z084V2NOcG1HMlpCUlJtRVFBQUFBJCQAAAAAAQAAAAEAAADBIa4sAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJl47GWZeOxlcW; BDUSS_BFESS=NqcllJbHB6YkVCQzItaGdifmRQOFR-c29KWG1Yczd6Z084V2NOcG1HMlpCUlJtRVFBQUFBJCQAAAAAAQAAAAEAAADBIa4sAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJl47GWZeOxlcW; BIDUPSID=35242943A7EC7E3C01B479A25475FD81; PSTM=1709996185; bdindexid=liltg0ji55lojjv6lov32q25t3; PTOKEN=3016de186f30d1b99d86053af6605275; PTOKEN_BFESS=3016de186f30d1b99d86053af6605275; STOKEN=2cd445813d9d6b08620a3ebaeca9e71eb0fd905000b03536361a3eb84bc5e6bb; STOKEN_BFESS=2cd445813d9d6b08620a3ebaeca9e71eb0fd905000b03536361a3eb84bc5e6bb; UBI=fi_PncwhpxZ%7ETaJc-ZQr4XdgbyU0s9x7vkY; UBI_BFESS=fi_PncwhpxZ%7ETaJc-ZQr4XdgbyU0s9x7vkY; __yjs_st=2_NjY1MDk3YmQ1Y2U4NDU1YjI5YzQ1MWRkNTYzYTU3MjhmNGRjMjA2ZDdiNGJiYWU4NGQwMmRlMGU5MTZlMzk4ODEwYzk2N2MzYmQxOTA5NWU1MjNmOWE1YzM5YzljYTJiMDAzNWMxNTcyOTA4YzczNmYyMzFjN2VlNGZiNjU4MGRiNWI4Y2EzNzI4YjgwMTFiN2M4NjdhMGMzNDE3YTY5ZTA2MDJjYjFlZWFmZTczNDA3ZDU5OGVjYTQzZjVmZTk3NzcwNWM0NzkyZTc5OGZlMDM3OWI5ODc4NjY5NmFmNGY5ZTM3MmFkY2M5NDA0ODI2NzU0MDFjODkzNGM1YjYwOF83X2UxYmQ4MDcx")
+cookies.append("BAIDUID=96E366727FD9EBF2F4A89C040BE258D9:FG=1; BAIDUID_BFESS=96E366727FD9EBF2F4A89C040BE258D9:FG=1; BDUSS=U5FeWNmWkJTSXNVTUVreDA0MTVrMmE4cUtsVjM2cTQzQjZPUkZqWW5yZzV0Uk5tRVFBQUFBJCQAAAAAAAAAAAEAAAD56I9hc3VubnlCYWJ5ZmFjZTIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADko7GU5KOxlW; BDUSS_BFESS=U5FeWNmWkJTSXNVTUVreDA0MTVrMmE4cUtsVjM2cTQzQjZPUkZqWW5yZzV0Uk5tRVFBQUFBJCQAAAAAAAAAAAEAAAD56I9hc3VubnlCYWJ5ZmFjZTIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADko7GU5KOxlW; BIDUPSID=96E366727FD9EBF2F4A89C040BE258D9; PSTM=1709975609; bdindexid=7oqgul4pi6blkjue1iuat64rd4; PTOKEN=b1ba14a8abe727e954621ca914294558; PTOKEN_BFESS=b1ba14a8abe727e954621ca914294558; STOKEN=726b2abefbb42bd5a37b5e7cb8c15696404340b89c86f6d63e18381aaed59f12; STOKEN_BFESS=726b2abefbb42bd5a37b5e7cb8c15696404340b89c86f6d63e18381aaed59f12; UBI=fi_PncwhpxZ%7ETaJc0ZWzMxP4Kdy0UxDbrUn; UBI_BFESS=fi_PncwhpxZ%7ETaJc0ZWzMxP4Kdy0UxDbrUn; __yjs_st=2_NjY1MDk3YmQ1Y2U4NDU1YjI5YzQ1MWRkNTYzYTU3MjhmNGRjMjA2ZDdiNGJiYWU4NGQwMmRlMGU5MTZlMzk4ODEwYzk2N2MzYmQxOTA5NWU1MjNmOWE1YzM5YzljYTJiMDAzNWMxNTcyOTA4YzczNmYyMzFjN2VlNGZiNjU4MGRiNWI4Y2EzNzI4YjgwMTFiN2M4NjdhMGMzNDE3YTY5ZTQ4NGI5NDMwMDEwMmVlZGUyZjgwYmRkZTlhNGZjYmIzOTdjYTIzYzAwMTE5NjAyMzM2YmEzYmQ3MjEzOGYyMGU1NWNmYmJmMjIwZTU3YTZmYTdjODRmYjM2MjIzZGU1Nl83X2E5ZGQ3MzAx")
 index_type = []
 index_type.append("search")
 index_type.append("feed")
-# area_ids=[0]
+# area_ids=[0,901]
 area_ids = [0, 901, 902, 903, 904, 905, 906, 907, 908, 909, 910, 911, 912, 913, 914, 915, 916, 917, 918, 919, 920, 921,
             922, 923, 924, 925, 926, 927, 928, 929, 930, 931, 932, 933, 934, 95, 94, 133, 195, 196, 197, 198, 199, 200,
             201, 202, 203, 204, 205, 207, 208, 209, 210, 211, 212, 213, 168, 262, 263, 264, 265, 266, 268, 370, 371,
@@ -44,9 +46,9 @@ area_ids = [0, 901, 902, 903, 904, 905, 906, 907, 908, 909, 910, 911, 912, 913, 
             681, 683, 684, 686, 689, 690, 2, 3, 4, 59, 61, 422, 424, 426, 588, 140, 395, 396, 472, 480, 139, 608, 652,
             659, 676, 682, 685, 688, 466, 516, 655, 656, 677, 678, 691]
 start_date = "2018-01-01"
-end_date = "2018-12-31"
+end_date = "2019-01-01"
 mysql_client = mysql.mysql.MySQLClient()
-area_map = {item["area_id"]:item["area_name"] for item in json.load(open("../area_code_map.json"))}
+area_map = {item["area_id"]:item for item in json.load(open("../area_code_map.json"))}
 
 def get_clear_keywords_list(keywords_list: List[List[str]]) -> List[List[str]]:
     q = Queue(-1)
@@ -83,11 +85,18 @@ def get_clear_keywords_list(keywords_list: List[List[str]]) -> List[List[str]]:
     return new_keywords_list
 
 
-def save_to_excel(datas: List[Dict]):
-    pd.DataFrame(datas).to_excel("index.xlsx")
+def save_to_excel(search: List[Dict],feed: List[Dict], name):
+    rsuf="_r"
+    if len(search)>0:
+        f = pd.DataFrame(search).join(pd.DataFrame(feed), how='left', rsuffix=rsuf)
+    else:
+        f = pd.DataFrame(feed).join(pd.DataFrame(search), how='left', rsuffix=rsuf)
+    drop_c = [s+rsuf for s in ["keyword","date","area","area_name","parent_area_id","area_level"]]
+    f=f.drop(drop_c, axis=1)
+    f.to_excel(f"{name}.xlsx")
 
 
-def get_search_index_demo(keywords_list: List[List[str]]):
+def get_index_demo(keywords_list: List[List[str]]):
     """
         1. 先清洗keywords数据，把没有收录的关键词拎出来
         2. 然后split_keywords关键词正常请求
@@ -106,6 +115,7 @@ def get_search_index_demo(keywords_list: List[List[str]]):
     i=0
     while not q.empty():
         cur_keywords_list, cur_area_id = q.get()
+        cookie = random.choice(cookies)
         try:
             print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} 开始请求: {cur_keywords_list},{cur_area_id},成功：{i} 剩余：{q.qsize()}")
 
@@ -114,13 +124,13 @@ def get_search_index_demo(keywords_list: List[List[str]]):
                     keywords_list=cur_keywords_list,
                     start_date=start_date,
                     end_date=end_date,
-                    cookies=cookies,
+                    cookies=cookie,
                     area=cur_area_id
                 )
                 for index in search_index_list:
                     index["keyword"] = ",".join(index["keyword"])
                     index["type"] = 'search'
-                    index["area_name"] = area_map[cur_area_id]
+                    update_area_info(index, cur_area_id)
                     mysql_client.upsert_index(index)
                 time.sleep(10)
             if "feed" in index_type:
@@ -128,27 +138,101 @@ def get_search_index_demo(keywords_list: List[List[str]]):
                     keywords_list=cur_keywords_list,
                     start_date=start_date,
                     end_date=end_date,
-                    cookies=cookies,
+                    cookies=cookie,
                     area=cur_area_id
                 )
                 for index in feed_index_list:
                     index["keyword"] = ",".join(index["keyword"])
-                    index["area_name"] = area_map[cur_area_id]
+                    update_area_info(index, cur_area_id)
                     mysql_client.upsert_index(index)
                 time.sleep(10)
             print(f"请求完成: {cur_keywords_list}")
             i = i+1
         except:
             traceback.print_exc()
-            print(f"请求出错, requested_keywords: {cur_keywords_list}")
+            print(f"请求出错, requested_keywords: {cur_keywords_list} area_id:{cur_area_id} cookie:{cookie}")
             q.put((cur_keywords_list, cur_area_id))
-            time.sleep(180)
+            time.sleep(60)
 
+def update_area_info(index,cur_area_id):
+    index["area_name"] = area_map[cur_area_id]["area_name"]
+    index["area_level"] = area_map[cur_area_id]["level"]
+    index["parent_area_id"] = area_map[cur_area_id]["parent_id"]
+def get_avg_index(keywords_list):
+    q = Queue(-1)
+    for splited_keywords_list in split_keywords(keywords_list):
+        for id in area_ids:
+            q.put((splited_keywords_list, id))
+
+    print("{} 开始请求百度指数avg".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+    datas = []
+    feed_data = []
+    search_data = []
+    i = 0
+    while not q.empty():
+        cur_keywords_list, cur_area_id = q.get()
+        cookie = random.choice(cookies)
+        try:
+            print(
+                f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} 开始请求: {cur_keywords_list},{cur_area_id},成功：{i} 剩余：{q.qsize()}")
+
+            if "search" in index_type:
+                search_index_list = get_search_index(
+                    keywords_list=cur_keywords_list,
+                    start_date=start_date,
+                    end_date=end_date,
+                    cookies=cookie,
+                    area=cur_area_id,
+                    split_time=False
+                )
+                pre_keyword = ''
+                for index in search_index_list:
+                    index["keyword"] = ",".join(index["keyword"])
+                    cur_keyword = index["keyword"]
+                    if pre_keyword==cur_keyword:
+                        continue
+                    index["type"] = 'search'
+                    index["area_level"] = 'search'
+                    index.pop("index")
+                    update_area_info(index, cur_area_id)
+                    search_data.append(index)
+                    pre_keyword=cur_keyword
+            if "feed" in index_type:
+                feed_index_list = get_feed_index(
+                    keywords_list=cur_keywords_list,
+                    start_date=start_date,
+                    end_date=end_date,
+                    cookies=cookie,
+                    area=cur_area_id,
+                    split_time=False
+                )
+                for index in feed_index_list:
+                    index["keyword"] = ",".join(index["keyword"])
+                    cur_keyword = index["keyword"]
+                    if pre_keyword == cur_keyword:
+                        continue
+                    update_area_info(index, cur_area_id)
+                    index.pop("index")
+                    feed_data.append(index)
+                    pre_keyword = cur_keyword
+            time.sleep(5)
+            print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} 请求完成: {cur_keywords_list}")
+            i = i + 1
+        except:
+            traceback.print_exc()
+            # save_to_excel(search_data,feed_data, start_date)
+            print(f"请求出错, requested_keywords: {cur_keywords_list} area_id:{cur_area_id} cookie:{cookie}")
+            # q.put((cur_keywords_list, cur_area_id))
+            return
+    save_to_excel(search_data, feed_data, start_date)
 
 
 if __name__ == "__main__":
     keywords_list = [
-        ["老赖"],["失信被执行人"],["失信人"],["违约"],["诈骗"]#,["欺诈"],["食言","爽约"]
+        ["老赖"],["失信被执行人"],["失信人"],["违约"],["诈骗"],["欺诈"],["食言","爽约"]
     ]
-    get_search_index_demo(keywords_list)
+    ## 咨询指数+搜索指数
+    # get_index_demo(keywords_list)
+    ## 平均值计算
+    get_avg_index(keywords_list)
 

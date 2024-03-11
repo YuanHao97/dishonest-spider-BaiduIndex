@@ -15,11 +15,16 @@ def get_search_index(
     start_date: str,
     end_date: str,
     cookies: str,
-    area: int = 0
+    area: int = 0,
+    split_time: bool = True
 ):
     if len(keywords_list) > 5:
         raise QdataError(ErrorCode.KEYWORD_LIMITED)
-    for start_date, end_date in common.get_time_range_list(start_date, end_date):
+    if split_time:
+        time_range = common.get_time_range_list(start_date, end_date)
+    else:
+        time_range = [(datetime.datetime.strptime(start_date, '%Y-%m-%d'), datetime.datetime.strptime(end_date, '%Y-%m-%d'))]
+    for start_date, end_date in time_range:
         print("{} time range: {} - {}".format(datetime.datetime.now().strftime('%Y%m%d %H:%M:%S'), start_date, end_date))
         encrypt_json = common.get_encrypt_json(
             start_date=start_date,
@@ -30,16 +35,19 @@ def get_search_index(
             cookies=cookies
         )
         encrypt_datas = encrypt_json['data']['userIndexes']
+        general_ratio = encrypt_json['data']['generalRatio']
         uniqid = encrypt_json['data']['uniqid']
 
         key = common.get_key(uniqid, cookies)
-        for encrypt_data in encrypt_datas:
+        for i, encrypt_data in enumerate(encrypt_datas):
+
             for kind in ALL_KIND:
                 encrypt_data[kind]['data'] = common.decrypt_func(key, encrypt_data[kind]['data'])
-            for formated_data in format_data(encrypt_data,area):
+                avg = general_ratio[i][kind]['avg']
+            for formated_data in format_data(encrypt_data,area,avg):
                 yield formated_data
 
-def format_data(data: Dict,area):
+def format_data(data: Dict,area,avg):
     """
         格式化堆在一起的数据
     """
@@ -63,6 +71,7 @@ def format_data(data: Dict,area):
                 'type': kind,
                 'date': cur_date.strftime('%Y-%m-%d'),
                 'index': index_data if index_data else '0',
-                'area': area
+                'area': area,
+                'avg': avg
             }
             yield formated_data
