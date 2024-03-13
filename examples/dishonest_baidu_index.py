@@ -23,10 +23,11 @@ cookies = []
 cookies.append("BAIDUID=C94E71F42A6F790D29D970728B032CE8:FG=1; BAIDUID_BFESS=C94E71F42A6F790D29D970728B032CE8:FG=1; BDUSS=FPN3V1dnY3bjFTWi13cmlCclFYUnY1MzF2UXp-LWJsWEdKZlc5YjdzTnVPeEptRVFBQUFBJCQAAAAAAAAAAAEAAABQWgVBYmVsaWV2ZTg5NAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG6u6mVuruplVT; BDUSS_BFESS=FPN3V1dnY3bjFTWi13cmlCclFYUnY1MzF2UXp-LWJsWEdKZlc5YjdzTnVPeEptRVFBQUFBJCQAAAAAAAAAAAEAAABQWgVBYmVsaWV2ZTg5NAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG6u6mVuruplVT; BIDUPSID=C94E71F42A6F790D29D970728B032CE8; H_PS_PSSID=39662_40207_40212_40217_40294_40291_40287_40285_40079_40364_40352_40373_40367_40317; PSTM=1709878894; bdindexid=baro17vijkbfemvour9sjf5li2; PTOKEN=c74f1608e72a402842aadb7f9cfbc521; PTOKEN_BFESS=c74f1608e72a402842aadb7f9cfbc521; STOKEN=6ede54cc33e9ae5ae4ed32c1019f87a7b731beec6238a69fd3dd37e52904b2a7; STOKEN_BFESS=6ede54cc33e9ae5ae4ed32c1019f87a7b731beec6238a69fd3dd37e52904b2a7; UBI=fi_PncwhpxZ%7ETaJcxFmvzU7ni8BBW0NmP2Y; UBI_BFESS=fi_PncwhpxZ%7ETaJcxFmvzU7ni8BBW0NmP2Y; __yjs_st=2_YWNjY2IyNzk5MTY5MWExNTU4NmQ1MTczNTM3YmQwZjUzOGJlODkxMjc5ZmQ0YmU2NDg4ZmI1ZGMxMjY2OTNlYzRjMTQ5ZGFhOTBkMzBlNTgzZGJiNTczZTg4NDk4YzM5NTFkYjNhZmRhNGViYmZjNzc0YjNiMDM4MTgxYjM4NTAyMDE1ZTgxOTE1N2E0NDliODI5ZWQ0NGE4YWY2YmMzYTM3MzI2N2Y0YmRiNjc0YTk5NDYzMWJkMzI5M2RiMGI2XzdfYTk3NjRjYzc=")
 cookies.append("BAIDUID=35242943A7EC7E3C01B479A25475FD81:FG=1; BAIDUID_BFESS=35242943A7EC7E3C01B479A25475FD81:FG=1; BDUSS=NqcllJbHB6YkVCQzItaGdifmRQOFR-c29KWG1Yczd6Z084V2NOcG1HMlpCUlJtRVFBQUFBJCQAAAAAAQAAAAEAAADBIa4sAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJl47GWZeOxlcW; BDUSS_BFESS=NqcllJbHB6YkVCQzItaGdifmRQOFR-c29KWG1Yczd6Z084V2NOcG1HMlpCUlJtRVFBQUFBJCQAAAAAAQAAAAEAAADBIa4sAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJl47GWZeOxlcW; BIDUPSID=35242943A7EC7E3C01B479A25475FD81; PSTM=1709996185; bdindexid=liltg0ji55lojjv6lov32q25t3; PTOKEN=3016de186f30d1b99d86053af6605275; PTOKEN_BFESS=3016de186f30d1b99d86053af6605275; STOKEN=2cd445813d9d6b08620a3ebaeca9e71eb0fd905000b03536361a3eb84bc5e6bb; STOKEN_BFESS=2cd445813d9d6b08620a3ebaeca9e71eb0fd905000b03536361a3eb84bc5e6bb; UBI=fi_PncwhpxZ%7ETaJc-ZQr4XdgbyU0s9x7vkY; UBI_BFESS=fi_PncwhpxZ%7ETaJc-ZQr4XdgbyU0s9x7vkY; __yjs_st=2_NjY1MDk3YmQ1Y2U4NDU1YjI5YzQ1MWRkNTYzYTU3MjhmNGRjMjA2ZDdiNGJiYWU4NGQwMmRlMGU5MTZlMzk4ODEwYzk2N2MzYmQxOTA5NWU1MjNmOWE1YzM5YzljYTJiMDAzNWMxNTcyOTA4YzczNmYyMzFjN2VlNGZiNjU4MGRiNWI4Y2EzNzI4YjgwMTFiN2M4NjdhMGMzNDE3YTY5ZTA2MDJjYjFlZWFmZTczNDA3ZDU5OGVjYTQzZjVmZTk3NzcwNWM0NzkyZTc5OGZlMDM3OWI5ODc4NjY5NmFmNGY5ZTM3MmFkY2M5NDA0ODI2NzU0MDFjODkzNGM1YjYwOF83X2UxYmQ4MDcx")
 cookies.append("BAIDUID=96E366727FD9EBF2F4A89C040BE258D9:FG=1; BAIDUID_BFESS=96E366727FD9EBF2F4A89C040BE258D9:FG=1; BDUSS=U5FeWNmWkJTSXNVTUVreDA0MTVrMmE4cUtsVjM2cTQzQjZPUkZqWW5yZzV0Uk5tRVFBQUFBJCQAAAAAAAAAAAEAAAD56I9hc3VubnlCYWJ5ZmFjZTIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADko7GU5KOxlW; BDUSS_BFESS=U5FeWNmWkJTSXNVTUVreDA0MTVrMmE4cUtsVjM2cTQzQjZPUkZqWW5yZzV0Uk5tRVFBQUFBJCQAAAAAAAAAAAEAAAD56I9hc3VubnlCYWJ5ZmFjZTIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADko7GU5KOxlW; BIDUPSID=96E366727FD9EBF2F4A89C040BE258D9; PSTM=1709975609; bdindexid=7oqgul4pi6blkjue1iuat64rd4; PTOKEN=b1ba14a8abe727e954621ca914294558; PTOKEN_BFESS=b1ba14a8abe727e954621ca914294558; STOKEN=726b2abefbb42bd5a37b5e7cb8c15696404340b89c86f6d63e18381aaed59f12; STOKEN_BFESS=726b2abefbb42bd5a37b5e7cb8c15696404340b89c86f6d63e18381aaed59f12; UBI=fi_PncwhpxZ%7ETaJc0ZWzMxP4Kdy0UxDbrUn; UBI_BFESS=fi_PncwhpxZ%7ETaJc0ZWzMxP4Kdy0UxDbrUn; __yjs_st=2_NjY1MDk3YmQ1Y2U4NDU1YjI5YzQ1MWRkNTYzYTU3MjhmNGRjMjA2ZDdiNGJiYWU4NGQwMmRlMGU5MTZlMzk4ODEwYzk2N2MzYmQxOTA5NWU1MjNmOWE1YzM5YzljYTJiMDAzNWMxNTcyOTA4YzczNmYyMzFjN2VlNGZiNjU4MGRiNWI4Y2EzNzI4YjgwMTFiN2M4NjdhMGMzNDE3YTY5ZTQ4NGI5NDMwMDEwMmVlZGUyZjgwYmRkZTlhNGZjYmIzOTdjYTIzYzAwMTE5NjAyMzM2YmEzYmQ3MjEzOGYyMGU1NWNmYmJmMjIwZTU3YTZmYTdjODRmYjM2MjIzZGU1Nl83X2E5ZGQ3MzAx")
+excel_name_prefix="搜索指数avg-"
 index_type = []
 index_type.append("search")
-index_type.append("feed")
-# area_ids=[0,901]
+# index_type.append("feed")
+# area_ids=[0]
 area_ids = [0, 901, 902, 903, 904, 905, 906, 907, 908, 909, 910, 911, 912, 913, 914, 915, 916, 917, 918, 919, 920, 921,
             922, 923, 924, 925, 926, 927, 928, 929, 930, 931, 932, 933, 934, 95, 94, 133, 195, 196, 197, 198, 199, 200,
             201, 202, 203, 204, 205, 207, 208, 209, 210, 211, 212, 213, 168, 262, 263, 264, 265, 266, 268, 370, 371,
@@ -45,8 +46,8 @@ area_ids = [0, 901, 902, 903, 904, 905, 906, 907, 908, 909, 910, 911, 912, 913, 
             285, 286, 307, 308, 309, 343, 344, 346, 673, 239, 241, 242, 243, 244, 456, 582, 670, 674, 675, 679, 680,
             681, 683, 684, 686, 689, 690, 2, 3, 4, 59, 61, 422, 424, 426, 588, 140, 395, 396, 472, 480, 139, 608, 652,
             659, 676, 682, 685, 688, 466, 516, 655, 656, 677, 678, 691]
-start_date = "2018-01-01"
-end_date = "2019-01-01"
+start_date = "2016-01-01"
+end_date = "2017-01-01"
 mysql_client = mysql.mysql.MySQLClient()
 area_map = {item["area_id"]:item for item in json.load(open("../area_code_map.json"))}
 
@@ -87,12 +88,16 @@ def get_clear_keywords_list(keywords_list: List[List[str]]) -> List[List[str]]:
 
 def save_to_excel(search: List[Dict],feed: List[Dict], name):
     rsuf="_r"
-    if len(search)>0:
+    if len(search)>0 and len(feed)>0:
         f = pd.DataFrame(search).join(pd.DataFrame(feed), how='left', rsuffix=rsuf)
+        drop_c = [s+rsuf for s in ["keyword","date","area","area_name","parent_area_id","area_level"]]
+        f=f.drop(drop_c, axis=1)
+    elif len(search)>0 and len(feed)==0:
+        f=pd.DataFrame(search)
+    elif len(feed)>0 and len(search)==0:
+        f = pd.DataFrame(feed)
     else:
-        f = pd.DataFrame(feed).join(pd.DataFrame(search), how='left', rsuffix=rsuf)
-    drop_c = [s+rsuf for s in ["keyword","date","area","area_name","parent_area_id","area_level"]]
-    f=f.drop(drop_c, axis=1)
+        return
     f.to_excel(f"{name}.xlsx")
 
 
@@ -113,6 +118,7 @@ def get_index_demo(keywords_list: List[List[str]]):
 
     print("{} 开始请求百度指数".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     i=0
+    e=0
     while not q.empty():
         cur_keywords_list, cur_area_id = q.get()
         cookie = random.choice(cookies)
@@ -148,11 +154,15 @@ def get_index_demo(keywords_list: List[List[str]]):
                 time.sleep(10)
             print(f"请求完成: {cur_keywords_list}")
             i = i+1
+            e=0
         except:
             traceback.print_exc()
             print(f"请求出错, requested_keywords: {cur_keywords_list} area_id:{cur_area_id} cookie:{cookie}")
             q.put((cur_keywords_list, cur_area_id))
             time.sleep(60)
+            e = e+1
+            if e>2:
+                break
 
 def update_area_info(index,cur_area_id):
     index["area_name"] = area_map[cur_area_id]["area_name"]
@@ -169,6 +179,7 @@ def get_avg_index(keywords_list):
     feed_data = []
     search_data = []
     i = 0
+    e=0
     while not q.empty():
         cur_keywords_list, cur_area_id = q.get()
         cookie = random.choice(cookies)
@@ -215,16 +226,20 @@ def get_avg_index(keywords_list):
                     index.pop("index")
                     feed_data.append(index)
                     pre_keyword = cur_keyword
-            time.sleep(5)
+            time.sleep(2)
             print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} 请求完成: {cur_keywords_list}")
             i = i + 1
+            e=0
         except:
             traceback.print_exc()
             # save_to_excel(search_data,feed_data, start_date)
             print(f"请求出错, requested_keywords: {cur_keywords_list} area_id:{cur_area_id} cookie:{cookie}")
-            # q.put((cur_keywords_list, cur_area_id))
-            return
-    save_to_excel(search_data, feed_data, start_date)
+            q.put((cur_keywords_list, cur_area_id))
+            e = e + 1
+            if e > 2:
+                break
+
+    save_to_excel(search_data, feed_data, excel_name_prefix+str(start_date))
 
 
 if __name__ == "__main__":
